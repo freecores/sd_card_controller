@@ -74,15 +74,15 @@
     }
     
     \begin{description}
-    \item[\texttt{bench/verilog}] - verilog testbench sources,
+    \item[\texttt{bench/verilog}] - Verilog testbench sources,
     \item[\texttt{doc}] - documentation files,
     \item[\texttt{doc/src}] - documentation \LaTeX sources,
-    \item[\texttt{rtl/verilog}] - ip core verilog sources,
+    \item[\texttt{rtl/verilog}] - IP core Verilog sources,
     \item[\texttt{sim/rtl\_sim/bin}] - simulation makefile and modelsim scripts,
     \item[\texttt{sim/rtl\_sim/log}] - log files created during simulation,
     \item[\texttt{sim/rtl\_sim/run}] - simulation execution directory,
     \item[\texttt{sw/example}] - baremetal example application for or1k,
-    \item[\texttt{syn/quartus/bin}] - synthesis makefile and scripts for quartus example project,
+    \item[\texttt{syn/quartus/bin}] - synthesis makefile and scripts for Quartus example project,
     \item[\texttt{syn/quartus/run}] - synthesis execution directory,
     \item[\texttt{syn/quartus/src}] - example project sources.
     \end{description}
@@ -90,13 +90,13 @@
     \subsection{Simulation}
     \label{sec:simulation}
     
-    To start simulation just enter to \path{sim/rtl_sim/run} directory and type \texttt{make}:
+    To start the simulation just change to the \path{sim/rtl_sim/run} directory and type \texttt{make}:
     \begin{verbatim}
 #> cd sim/rtl_sim/run
 #> make
     \end{verbatim}
     
-    Every testbench is written in SystemVerilog (mostly due to use of \texttt{assert} keyword). Every testbench is self checking. Test error are represented by
+    Every testbench is written in SystemVerilog (mostly due to use of \texttt{assert} keyword). Every testbench is self checking. Test errors are represented by
     assert failures. Every testbench starts by displaying: 
     \begin{verbatim}
 # testbench_name start ...
@@ -105,7 +105,7 @@
     \begin{verbatim}
 # testbench_name finish ...
     \end{verbatim} 
-    If no asserts are displayed between these lines, the test passes. Below is an example of passing test:
+    If no asserts are displayed between these lines, the test passed. Below is an example of passing test:
     \begin{verbatim}
 ... 
 some compilation output
@@ -132,19 +132,19 @@ some compilation output
     \subsubsection{Simulation makefile targets}
     \label{sec:sim_make_targ}
 
-    The default simulation target is to run all testbenches from \path{bench/verilog} directory that ends with \path{_.sv}. Other simulation targets are:
+    The default simulation target is to run all testbenches from \path{bench/verilog} directory that end with \path{_.sv}. Other simulation targets are:
     \begin{description}
     \item[\texttt{clean}] - remove all simulation output files,
-    \item[\texttt{print\_testbenches}] - lists all availible testbenches,
+    \item[\texttt{print\_testbenches}] - lists all available testbenches,
     \item[\texttt{modelsim}] - compiles all sources and launches modelsim (see \ref{sec:sim_make_var}),
-    \item[\texttt{*\_tb}] - compiles and executes given testbench. All items listed by the \path{print_testbenches} target can be executed this way,
-    \item[\texttt{*\_tb\_gui}] - same as \path{*_tb} target, only instead of executing simulation in command-line, launches modelsim.
+    \item[\texttt{*\_tb}] - compiles and executes the given testbench. All items listed by the \path{print_testbenches} target can be executed this way,
+    \item[\texttt{*\_tb\_gui}] - same as \path{*_tb} target, only instead of executing the simulation via command-line, launches modelsim.
     \end{description}
     
     \subsubsection{Simulation makefile environment variables}
     \label{sec:sim_make_var}
     
-    Simulation makefile uses couple of environment variables to setup simulation:
+    The simulation makefile uses a couple of environment variables to setup the simulation:
     \begin{description}
     \item[\texttt{MODELSIM\_DIR}] - modelsim installation directory (\path{\$(MODELSIM_DIR)/bin/vsim} should be a valid path),
     \item[\texttt{VCD}] - when set to 1 - all waveforms are dumped to \path{sim/rtl_sim/out/*.vcd} files; when set to 0 - no waveforms are dumped (0 is default),
@@ -161,27 +161,27 @@ some compilation output
 #> cd syn/quartus/run
 #> make
     \end{verbatim}
-    Example project consist of all verilog sources from \path{rtl/verilog} directory and \path{syn/quartus/src/sdc_controller_top.v} source file. 
-    The purpose of the additional verilog file is to instantiate the \textit{Wishbone SD Card Controller IP Core} and register all inputs/outputs to/from the core.
+    The example project consists of all Verilog sources from the \path{rtl/verilog} directory and \path{syn/quartus/src/sdc_controller_top.v} source file. 
+    The purpose of the additional Verilog file is to instantiate the \textit{Wishbone SD Card Controller IP Core} and register all inputs/outputs to/from the core.
     This makes timing verification more accurate.
     
     \subsubsection{Synthesis makefile targets}
     \label{sec:syn_make_targ}
     
-    The default synthesis target is to synthesize the project and create .sof file in \path{syn/quartus/run} directory. Other synthesis targets are:
+    The default synthesis target is to synthesize the project and create a .sof file in the \path{syn/quartus/run} directory. Other synthesis targets are:
     \begin{description}
     \item[\texttt{clean}] - remove all synthesis output files,
-    \item[\texttt{print\_config}] - prints projects configuration of FPGA device,
-    \item[\texttt{project}] - creates quartus project files (.qpf and .qsf),
-    \item[\texttt{quartus}] - creates quartus project files and launches quartus IDE.
+    \item[\texttt{print\_config}] - prints project configuration of FPGA device,
+    \item[\texttt{project}] - creates Quartus project files (.qpf and .qsf),
+    \item[\texttt{quartus}] - creates Quartus project files and launches the Quartus IDE.
     \end{description}
     
     \subsubsection{Synthesis makefile environment variables}
     \label{sec:syn_make_var}
     
-    Synthesis makefile uses couple of environment variables to setup synthesis:
+    The synthesis makefile uses a couple of environment variables to setup synthesis:
     \begin{description}
-    \item[\texttt{QUARTUS\_DIR}] - quartus installation directory (\path{\$(QUARTUS_DIR)/bin/quartus} should be a valid path),
+    \item[\texttt{QUARTUS\_DIR}] - Quartus installation directory (\path{\$(QUARTUS_DIR)/bin/quartus} should be a valid path),
     \item[\texttt{FPGA\_FAMILY}] - name of the FPGA device family,
     \item[\texttt{FPGA\_PART}] - name of the FPGA device,
     \item[\texttt{V}] - when set to 1 - enables verbose output; when set to 0 - normal simulation output (0 is default).

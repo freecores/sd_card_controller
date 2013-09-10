@@ -43,7 +43,7 @@
 \section{Software interface}
 \label{sec:sw_if}
 
-    Access to IP core registers is provided through Wishbone slave interface. 
+    Access to IP core registers is provided through a Wishbone slave interface. 
     
     \subsection{IP Core registers}
     \label{sec:regs}
@@ -60,7 +60,7 @@
                 \texttt{response3} & \texttt{0x14} & R & bits 119-96 of the response \\ \hline
                 \texttt{control} & \texttt{0x1C} & RW & IP core control settings \\ \hline
                 \texttt{timeout} & \texttt{0x20} & RW & timeout configuration \\ \hline
-                \texttt{clock\_devider} & \texttt{0x24} & RW & MMC/SD interface clock devider \\ \hline
+                \texttt{clock\_divider} & \texttt{0x24} & RW & MMC/SD interface clock divider \\ \hline
                 \texttt{reset} & \texttt{0x28} & RW & software reset \\ \hline
                 \texttt{voltage} & \texttt{0x2C} & R & power control information \\ \hline
                 \texttt{capabilities} & \texttt{0x30} & R & capabilities information \\ \hline
@@ -79,7 +79,7 @@
     \subsubsection{Argument register}
     \label{sec:arg_reg}
     
-    Write operation to this register triggers command transaction (command register has to be configured before writing to this register).
+    A write operation to this register triggers a command transaction (The command register has to be configured before writing to this register).
     
     \begin{table}[H]
     \caption{Argument register}
@@ -94,7 +94,7 @@
     \subsubsection{Command register}
     \label{sec:cmd_reg}
     
-    This register configures all aspects of command to be sent.
+    This register configures all aspects of the command to be sent.
     
     \begin{table}[H]
     \caption{Command register}
@@ -106,9 +106,9 @@
                 \texttt{[6:5]} & \texttt{0x0} & RW & data transfer specification. 0x0 - no data transfer; 0x1 - triggers read data transaction after command transaction;
                 0x2 - triggers write data transaction after command transaction\\ \hline
                 \texttt{[4]} & \texttt{0x0} & RW & check response for correct command index \\ \hline
-                \texttt{[3]} & \texttt{0x0} & RW & check response crc \\ \hline
+                \texttt{[3]} & \texttt{0x0} & RW & check response CRC \\ \hline
                 \texttt{[2]} & \texttt{0x0} & RW & check for busy signal after command transaction (if busy signal will be asserted after command transaction, 
-                core will wait for as long as busy signal remains) \\ \hline
+                the core will wait for as long as the busy signal remains) \\ \hline
                 \texttt{[1:0]} & \texttt{0x0} & RW & response check configuration. 0x0 - don't wait for response; 0x1 - wait for short response (48-bits);
                 0x2 - wait for long response (136-bits) \\ \hline
                 \hline
@@ -119,7 +119,7 @@
     \subsubsection{Response register 0-3}
     \label{sec:resp_reg}
     
-    Response registers 0-3 contains response data bits after end of succesful command transaction (if bits 1-0 of command register were configured to wait for response).
+    Response registers 0-3 contain response data bits after a successful command transaction (if bits 1-0 of command register were configured to wait for response).
     
     \begin{table}[H]
     \caption{Response register 0-3}
@@ -149,10 +149,10 @@
     \subsubsection{Timeout register}
     \label{sec:timeout_reg}
     
-    Timeout register configures transaction watchdog counter. If any transaction will last longer than configured timeout, interrupt will be generated.
-    Value in timeout register represents the number of \texttt{sd\_clk\_o\_pad} clock cyckles. Register value is calculated by following formula:
+    The timeout register configures the transaction watchdog counter. If any transaction lasts longer than the configured timeout, an interrupt will be generated.
+    The value in the timeout register represents the number of \texttt{sd\_clk\_o\_pad} clock cycles. The register value is calculated by the following formula:
     \begin{equation}
-    REG = \frac{timeout[s] * frequency_{\texttt{sd\_clk\_i\_pad}}[Hz]}{(2*(\texttt{clock\_devider} + 1))}
+    REG = \frac{timeout[s] * frequency_{\texttt{sd\_clk\_i\_pad}}[Hz]}{(2*(\texttt{clock\_divider} + 1))}
     \end{equation} 
     
     \begin{table}[H]
@@ -166,21 +166,21 @@
         \label{tab:timeout_reg}
     \end{table}
     
-    \subsubsection{Clock devider register}
+    \subsubsection{Clock divider register}
     \label{sec:div_reg}
     
-    Clock devider register control division of \texttt{sd\_clk\_i\_pad} signal frequency. Output of this devider is routed to MMC/SD interface clock domain.
-    Register value is calculated by following formula:
+    The clock divider register controls division of the \texttt{sd\_clk\_i\_pad} signal frequency. The output of this divider is routed to the MMC/SD interface clock domain.
+    The register value is calculated by following formula:
     \begin{equation}
     REG = \frac{frequency_{\texttt{sd\_clk\_i\_pad}}[Hz]}{2*frequency_{\texttt{sd\_clk\_i\_pad}}[Hz]} - 1
     \end{equation} 
     
     \begin{table}[H]
-    \caption{Clock devider register}
+    \caption{Clock divider register}
         \begin{tabular}{m{1.3cm}|m{2cm}|m{1cm}|m{8cm}}
                 \rowcolor[gray]{0.7} bit \# & reset value & access & description \\ \hline \hline
                 \texttt{[31:8]} & & & reserved \\ \hline
-                \texttt{[7:0]} & \texttt{0x0} & RW & devider ratio \\ \hline
+                \texttt{[7:0]} & \texttt{0x0} & RW & divider ratio \\ \hline
                 \hline
         \end{tabular}
         \label{tab:div_reg}
@@ -203,7 +203,7 @@
     \subsubsection{Voltage information register}
     \label{sec:voltage_reg}
     
-    This register contains the value of power supply voltage expressed in mV. It is read-only register and its
+    This register contains the value of the card power supply voltage expressed in mV. It is a read-only register and its
     value is configured in HDL.
     
     \begin{table}[H]
@@ -232,7 +232,7 @@
     \subsubsection{Command events status register}
     \label{sec:cmd_evt_reg}
     
-    This register holds all pending event flags related to command transactions. Write operation to this register
+    This register holds all pending event flags related to command transactions.  Any write operation to this register
     clears all flags.
     
     \begin{table}[H]
@@ -241,7 +241,7 @@
                 \rowcolor[gray]{0.7} bit \# & reset value & access & description \\ \hline \hline
                 \texttt{[31:5]} & & & reserved \\ \hline
                 \texttt{[4]} & \texttt{0x0} & RW & index error event \\ \hline
-                \texttt{[3]} & \texttt{0x0} & RW & crc error event \\ \hline
+                \texttt{[3]} & \texttt{0x0} & RW & CRC error event \\ \hline
                 \texttt{[2]} & \texttt{0x0} & RW & timeout error event \\ \hline
                 \texttt{[1]} & \texttt{0x0} & RW & error event (logic sum of all error events) \\ \hline
                 \texttt{[0]} & \texttt{0x0} & RW & command transaction succesful completion event \\ \hline
@@ -253,7 +253,7 @@
     \subsubsection{Command transaction events enable register}
     \label{sec:cmd_ena_reg}
     
-    This register acts as event \textit{and} mask. To enable given event, corresponding bit must be set to 1.
+    This register acts as an event \textit{and} mask. To enable a given event, the corresponding bit must be set to 1.
     
     \begin{table}[H]
     \caption{Command transaction events enable register}
@@ -261,10 +261,10 @@
                 \rowcolor[gray]{0.7} bit \# & reset value & access & description \\ \hline \hline
                 \texttt{[31:5]} & & & reserved \\ \hline
                 \texttt{[4]} & \texttt{0x0} & RW & enable index error event \\ \hline
-                \texttt{[3]} & \texttt{0x0} & RW & enable crc error event \\ \hline
+                \texttt{[3]} & \texttt{0x0} & RW & enable CRC error event \\ \hline
                 \texttt{[2]} & \texttt{0x0} & RW & enable timeout error event \\ \hline
                 \texttt{[1]} & \texttt{0x0} & RW & enable error event (logic sum of all error events) \\ \hline
-                \texttt{[0]} & \texttt{0x0} & RW & enable command transaction succesful completion event \\ \hline
+                \texttt{[0]} & \texttt{0x0} & RW & enable command transaction successful completion event \\ \hline
                 \hline
         \end{tabular}
         \label{tab:cmd_ena_reg}
@@ -273,7 +273,7 @@
     \subsubsection{Data transaction events status register}
     \label{sec:data_evt_reg}
     
-    This register holds all pending event flags related to data transactions. Write operation to this register
+    This register holds all pending event flags related to data transactions. Any write operation to this register
     clears all flags.
     
     \begin{table}[H]
@@ -282,8 +282,8 @@
                 \rowcolor[gray]{0.7} bit \# & reset value & access & description \\ \hline \hline
                 \texttt{[31:3]} & & & reserved \\ \hline
                 \texttt{[2]} & \texttt{0x0} & RW & fifo error event \\ \hline
-                \texttt{[1]} & \texttt{0x0} & RW & crc error event \\ \hline
-                \texttt{[0]} & \texttt{0x0} & RW & data transaction succesful completion event \\ \hline
+                \texttt{[1]} & \texttt{0x0} & RW & CRC error event \\ \hline
+                \texttt{[0]} & \texttt{0x0} & RW & data transaction successful completion event \\ \hline
                 \hline
         \end{tabular}
         \label{tab:data_evt_reg}
@@ -292,7 +292,7 @@
     \subsubsection{Data transaction events enable register}
     \label{sec:data_ena_reg}
     
-    This register acts as event \textit{and} mask. To enable given event, corresponding bit must be set to 1.
+    This register acts as an event \textit{and} mask. To enable a given event, the corresponding bit must be set to 1.
     
     \begin{table}[H]
     \caption{Data transaction events enable register}
@@ -300,8 +300,8 @@
                 \rowcolor[gray]{0.7} bit \# & reset value & access & description \\ \hline \hline
                 \texttt{[31:3]} & & & reserved \\ \hline
                 \texttt{[2]} & \texttt{0x0} & RW & enable fifo error event \\ \hline
-                \texttt{[1]} & \texttt{0x0} & RW & enable crc error event \\ \hline
-                \texttt{[0]} & \texttt{0x0} & RW & enable data transaction succesful completion event \\ \hline
+                \texttt{[1]} & \texttt{0x0} & RW & enable CRC error event \\ \hline
+                \texttt{[0]} & \texttt{0x0} & RW & enable data transaction successful completion event \\ \hline
                 \hline
         \end{tabular}
         \label{tab:data_ena_reg}
@@ -310,14 +310,14 @@
     \subsubsection{Block size register}
     \label{sec:blocksize_reg}
     
-    This register controls the number of bytes to write/read in a single block. Data transaction will transmit number of bytes equal to size of block times blocks count.
+    This register controls the number of bytes to write/read in a single block. A data transaction will transmit a number of bytes equal to the block size times the block count.
     
     \begin{table}[H]
     \caption{Block size register}
         \begin{tabular}{m{1.3cm}|m{2cm}|m{1cm}|m{8cm}}
                 \rowcolor[gray]{0.7} bit \# & reset value & access & description \\ \hline \hline
                 \texttt{[31:12]} & & & reserved \\ \hline
-                \texttt{[11:0]} & \texttt{0x200} & RW & number of byes in a single block \\ \hline
+                \texttt{[11:0]} & \texttt{0x200} & RW & number of bytes in a single block \\ \hline
                 \hline
         \end{tabular}
         \label{tab:blocksize_reg}
@@ -326,8 +326,8 @@
     \subsubsection{Block count register}
     \label{sec:blockcnt_reg}
     
-    This register controls the number of blocks to write/read in data transaction. Data transaction will transmit number of bytes equal to value blocks count times block size.
-    Register value is calculated by following formula:
+    This register controls the number of blocks to write/read in a data transaction. A data transaction will transmit a number of bytes equal to the block count times block size.
+    The register value is calculated by following formula:
     \begin{equation}
     REG = number\_of\_blocks - 1
     \end{equation} 
@@ -346,8 +346,8 @@
     \subsubsection{DMA destination / source register}
     \label{sec:dst_src_reg}
     
-    This registers configures the DMA source / destination address. For write transactions, this address points to the begining of data block to be sent.
-    For read transactions, this address points to the begining of data block to be written.
+    This registers configures the DMA source / destination address. For write transactions, this address points to the begining of the data block to be sent.
+    For read transactions, this address points to the begining of data block to be received and written to RAM.
     
     \begin{table}[H]
     \caption{DMA destination / source register}
